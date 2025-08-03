@@ -10,6 +10,7 @@ public class ReplayManager : MonoBehaviour
     private readonly List<SortedList<float, List<PlayerAction>>> cloneActions = new();
     private readonly List<GameObject> clones = new();
     private readonly List<Vector2> cloneStartPositions = new();
+    private readonly List<Coroutine> activeCoroutines = new();
     [SerializeField]
     private GameObject clonePrefab;
 
@@ -36,10 +37,11 @@ public class ReplayManager : MonoBehaviour
                 foreach (PlayerAction pa in action.Value)
                 {
                     GameObject clone = clones[i];
-                    StartCoroutine(CallFunctionAfterDelay(
+                    var coroutine = StartCoroutine(CallFunctionAfterDelay(
                         action.Key,
                         () => ExecuteAction(clone, pa)
                     ));
+                    activeCoroutines.Add(coroutine);
                 }
             }
         }
@@ -126,6 +128,15 @@ public class ReplayManager : MonoBehaviour
     }
     public void EndReplay()
     {
+        foreach (var coroutine in activeCoroutines)
+        {
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+        }
+        activeCoroutines.Clear();
+
         foreach (GameObject player in clones)
         {
             Destroy(player);
@@ -135,7 +146,7 @@ public class ReplayManager : MonoBehaviour
 
     public void Reset()
     {
+        EndReplay();
         cloneActions.Clear();
-        clones.Clear();
     }
 }

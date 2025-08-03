@@ -12,4 +12,9 @@ public class Clone : MonoBehaviour
         GameManager.instance.IncrementScore((int)(10f - timeToScore) * 100);
         // Possible combo score?
     }
+
+    public bool IsDead()
+    {
+        return isDead;
+    }
 }

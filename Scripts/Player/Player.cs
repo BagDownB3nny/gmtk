@@ -45,4 +45,9 @@ public class Player : MonoBehaviour
         GameManager.instance.IsGameOver = true; // Trigger game over logic
         // Additional logic for player death can be added here
     }   
+
+    public bool IsDead()
+    {
+        return isDead;
+    }
 }

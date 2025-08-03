@@ -22,7 +22,6 @@ public class TimeManager : MonoBehaviour
     {
         if (Time.time - startTime >= loopDuration)
         {
-            // GameManager.instance.EndLoop();
             EndLoop();
             StartLoop();
         }
@@ -37,12 +36,8 @@ public class TimeManager : MonoBehaviour
     public void EndLoop()
     {
         print("LOOP END");
-        // CreateNewClone();
-        isLoopActive = false;
         ReplayManager.instance.EndReplay();
         RecorderManager.instance.SaveRecord();
         ReplayManager.instance.SavePlayerStartPositions();
-        StartLoop();
-        // GameManager.instance.StartLoop();
     }
 }
